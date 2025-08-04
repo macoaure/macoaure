@@ -1,20 +1,20 @@
-# Hi there, I'm Marcos Aurelio! 👋
+# Olá! Eu sou o Marcos Aurelio! 👋
 
 <p align="center">
-  <a href="README.md">🇺🇸 English</a> | 
+  <a href="README.md">🇺🇸 English</a> |
   <a href="README.pt-br.md">🇧🇷 Português</a>
 </p>
 
-## 🚀 About Me
+## 🚀 Sobre Mim
 
-- 🎓 **Software Architect & Engineer** passionate about building scalable solutions
-- 👨‍🏫 **University Professor** at UniFil - Centro Universitário Filadélfia
-- 📚 **Master's Student** in Computer Science at UEL - Universidade Estadual de Londrina
-- 💼 **Software Engineer** at Farmbits, specializing in full-stack development and cloud infrastructure
+- 🎓 **Arquiteto e Engenheiro de Software** apaixonado por criar soluções escaláveis
+- 👨‍🏫 **Professor Universitário** na UniFil - Centro Universitário Filadélfia
+- 📚 **Mestrando** em Ciência da Computação na UEL - Universidade Estadual de Londrina
+- 💼 **Engenheiro de Software** na Farmbits, especializado em desenvolvimento full-stack e infraestrutura em nuvem
 
-## 🛠️ Tech Stack
+## 🛠️ Stack Tecnológico
 
-### 💻 Backend Development
+### 💻 Desenvolvimento Backend
 ![PHP](https://img.shields.io/badge/PHP-777BB4?style=flat-square&logo=php&logoColor=white)
 ![Laravel](https://img.shields.io/badge/Laravel-FF2D20?style=flat-square&logo=laravel&logoColor=white)
 ![Symfony](https://img.shields.io/badge/Symfony-000000?style=flat-square&logo=symfony&logoColor=white)
@@ -25,7 +25,7 @@
 ![Ruby](https://img.shields.io/badge/Ruby-CC342D?style=flat-square&logo=ruby&logoColor=white)
 ![Ruby on Rails](https://img.shields.io/badge/Rails-CC0000?style=flat-square&logo=rubyonrails&logoColor=white)
 
-### 🎨 Frontend Development
+### 🎨 Desenvolvimento Frontend
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=flat-square&logo=javascript&logoColor=black)
 ![Vue.js](https://img.shields.io/badge/Vue.js-4FC08D?style=flat-square&logo=vuedotjs&logoColor=white)
 ![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=html5&logoColor=white)
@@ -43,7 +43,7 @@
 ![Heroku](https://img.shields.io/badge/Heroku-430098?style=flat-square&logo=heroku&logoColor=white)
 ![Dokku](https://img.shields.io/badge/Dokku-1F88C0?style=flat-square&logo=dokku&logoColor=white)
 
-### 🗄️ Databases & Tools
+### 🗄️ Bancos de Dados e Ferramentas
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=flat-square&logo=mysql&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=flat-square&logo=postgresql&logoColor=white)
 
@@ -52,38 +52,38 @@
 ![Magento 2](https://img.shields.io/badge/Magento_2-EE672F?style=flat-square&logo=magento&logoColor=white)
 ![WordPress](https://img.shields.io/badge/WordPress-21759B?style=flat-square&logo=wordpress&logoColor=white)
 
-### 🧪 Testing & Quality
+### 🧪 Testes e Qualidade
 ![PHPUnit](https://img.shields.io/badge/PHPUnit-3C7DD2?style=flat-square&logo=php&logoColor=white)
 ![Pest PHP](https://img.shields.io/badge/Pest_PHP-FF6B35?style=flat-square&logo=php&logoColor=white)
 ![PyTorch](https://img.shields.io/badge/PyTorch-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)
 
-### 🔗 Emerging Technologies
+### 🔗 Tecnologias Emergentes
 ![Blockchain](https://img.shields.io/badge/Blockchain-121D33?style=flat-square&logo=blockchain-dot-com&logoColor=white)
 ![Web3](https://img.shields.io/badge/Web3-F16822?style=flat-square&logo=web3-dot-js&logoColor=white)
 
-### 🛠️ Management & Productivity
+### 🛠️ Gestão e Produtividade
 ![Jira](https://img.shields.io/badge/Jira-0052CC?style=flat-square&logo=jira&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=flat-square&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=flat-square&logo=github&logoColor=white)
 ![Scrum](https://img.shields.io/badge/Scrum-6DB33F?style=flat-square&logo=scrumalliance&logoColor=white)
 
-## 📊 GitHub Stats
+## 📊 Estatísticas do GitHub
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=macoaure&show_icons=true&theme=dark&count_private=true" alt="GitHub Stats" height="180">
-  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=macoaure&layout=compact&theme=dark" alt="Top Languages" height="180">
+  <img src="https://github-readme-stats.vercel.app/api?username=macoaure&show_icons=true&theme=dark&count_private=true" alt="Estatísticas do GitHub" height="180">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=macoaure&layout=compact&theme=dark" alt="Linguagens Mais Usadas" height="180">
 </p>
 
 <p align="center">
-  <img src="https://streak-stats.demolab.com?user=macoaure&theme=dark&date_format=M%20j%5B%2C%20Y%5D&exclude_days=Sun%2CSat" alt="GitHub Streak" />
+  <img src="https://streak-stats.demolab.com?user=macoaure&theme=dark&date_format=M%20j%5B%2C%20Y%5D&exclude_days=Sun%2CSat" alt="Sequência do GitHub" />
 </p>
 
-## 📫 Connect with me
+## 📫 Conecte-se comigo
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/macoaure)
 
 ---
 
 <p align="center">
-  <img src="https://komarev.com/ghpvc/?username=macoaure&color=blue&style=flat" alt="Profile Views" />
+  <img src="https://komarev.com/ghpvc/?username=macoaure&color=blue&style=flat" alt="Visualizações do Perfil" />
 </p>
