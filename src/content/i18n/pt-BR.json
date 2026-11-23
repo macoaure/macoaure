@@ -1,0 +1,12 @@
+{
+  "search.label": "Pesquisar",
+  "search.cancelLabel": "Cancelar",
+  "languageSelect.accessibleLabel": "Selecionar idioma",
+  "themeSelect.accessibleLabel": "Selecionar tema",
+  "menuButton.accessibleLabel": "Menu",
+  "sidebarNav.accessibleLabel": "Navegação principal",
+  "tableOfContents.onThisPage": "Nesta página",
+  "page.previousLink": "Anterior",
+  "page.nextLink": "Próximo",
+  "i18n.untranslatedContent": "Este conteúdo ainda não está disponível no seu idioma."
+}
