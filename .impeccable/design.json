@@ -1,0 +1,115 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-22T00:00:00.000Z",
+  "title": "Design System: Macoaure Campaign Interface",
+  "extensions": {
+    "colorMeta": {
+      "charcoal-black": {
+        "role": "neutral",
+        "displayName": "Charcoal Black",
+        "canonical": "#050505",
+        "tonalRamp": ["#050505", "#0c0e0c", "#111310", "#20221f", "#383a35", "#5b5d56", "#deddd4", "#f3f1e8"]
+      },
+      "acid-lime": {
+        "role": "primary",
+        "displayName": "Acid Lime",
+        "canonical": "#b6ff00",
+        "tonalRamp": ["#263500", "#435900", "#638300", "#86ad00", "#9fdb00", "#b6ff00", "#d5ff66", "#efffc2"]
+      },
+      "warm-bone": {
+        "role": "neutral",
+        "displayName": "Warm Bone",
+        "canonical": "#f3f1e8",
+        "tonalRamp": ["#111310", "#20221f", "#383a35", "#5b5d56", "#85867e", "#b8b8ad", "#deddd4", "#f3f1e8"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Campaign Display",
+        "purpose": "Hero titles and campaign-scale statements; scale creates authority."
+      },
+      "label": {
+        "displayName": "Technical Label",
+        "purpose": "Dates, route metadata, status, and real calibration notes."
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "state-transition",
+        "value": "140ms ease",
+        "purpose": "Short color and border transitions for interactive states."
+      }
+    ],
+    "breakpoints": [
+      { "name": "mobile", "value": "50rem" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Signal Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The active campaign action: compact, square, and unmistakable.",
+      "html": "<button class=\"ds-btn-primary\">OPEN DOSSIER</button>",
+      "css": ".ds-btn-primary { background: #b6ff00; color: #080908; border: 1px solid #b6ff00; border-radius: 0; padding: 12px 20px; font: 600 0.75rem/1.3 'Fira Code', monospace; letter-spacing: 0.08em; text-transform: uppercase; transition: background-color 140ms ease, color 140ms ease, border-color 140ms ease; } .ds-btn-primary:hover { background: #f3f1e8; border-color: #f3f1e8; } .ds-btn-primary:focus-visible { outline: 2px solid #b6ff00; outline-offset: 3px; }"
+    },
+    {
+      "name": "Ghost Control",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "A secondary route that stays visible without competing with the signal action.",
+      "html": "<button class=\"ds-btn-ghost\">VIEW LOG</button>",
+      "css": ".ds-btn-ghost { background: transparent; color: #f3f1e8; border: 1px solid #383a35; border-radius: 0; padding: 12px 20px; font: 500 0.75rem/1.3 'Fira Code', monospace; letter-spacing: 0.08em; text-transform: uppercase; transition: border-color 140ms ease, color 140ms ease; } .ds-btn-ghost:hover { border-color: #b6ff00; color: #b6ff00; } .ds-btn-ghost:focus-visible { outline: 2px solid #b6ff00; outline-offset: 3px; }"
+    },
+    {
+      "name": "Campaign Navigation",
+      "kind": "nav",
+      "refersTo": "navigation",
+      "description": "A compact top navigation bar with precise active-state signaling.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav-active\" href=\"#\">HOME</a><a href=\"#\">RESUME</a><a href=\"#\">BLOG</a></nav>",
+      "css": ".ds-nav { display: flex; gap: 24px; align-items: center; background: #080908; border-bottom: 1px solid #383a35; padding: 12px 16px; font: 500 0.75rem/1.3 'Fira Code', monospace; letter-spacing: 0.08em; text-transform: uppercase; } .ds-nav a { color: #deddd4; text-decoration: none; } .ds-nav a:hover, .ds-nav .ds-nav-active { color: #b6ff00; }"
+    },
+    {
+      "name": "Halftone Field",
+      "kind": "custom",
+      "refersTo": "halftone-field",
+      "description": "A bounded calibration texture for hero or negative-space zones.",
+      "html": "<div class=\"ds-halftone\" aria-hidden=\"true\"></div>",
+      "css": ".ds-halftone { width: 240px; height: 160px; background-color: #b6ff00; background-image: radial-gradient(circle, #050505 1.5px, transparent 1.5px); background-size: 14px 14px; }"
+    }
+  ],
+  "narrative": {
+      "northStar": "The Personal Campaign Transmission",
+    "overview": "Macoaure is a personal blog and resume treated like a cinematic campaign site: bold, atmospheric, editorial, and engineered rather than decorated. The site should feel like a transmission from a speculative world, translated into a readable personal archive.\n\nThe visual language is premium industrial science fiction with full-bleed cinematic energy: large display typography, hard black fields, warm bone-white type, saturated acid-lime action color, and compact chapter labels. Fira Code remains the technical metadata voice; Barlow Condensed carries campaign-scale headlines.\n\nThe result should be mysterious without becoming dystopian, technical without becoming noisy, and expressive without sacrificing the reading experience.",
+    "keyCharacteristics": [
+      "Deep charcoal canvas with warm bone-white type and structural gray rules.",
+      "Acid-lime used for calls to action, active links, and campaign markers.",
+      "Barlow Condensed display headlines paired with Fira Code technical metadata.",
+      "Large cinematic chapters, asymmetric grids, and compact uppercase labels.",
+      "Halftone fields used as controlled graphic texture, never as wallpaper.",
+      "Flat engineered surfaces with hard borders and tonal layers instead of decorative shadows."
+    ],
+    "rules": [
+      { "name": "The Campaign Signal Rule", "body": "Acid-lime marks the next action or the active chapter. It should never become a general-purpose background color.", "section": "colors" },
+      { "name": "The Two-Voice Rule", "body": "Barlow Condensed owns the campaign voice; Fira Code owns the technical voice. Do not introduce another display face.", "section": "typography" },
+      { "name": "The Flat Campaign Rule", "body": "Surfaces are flat at rest. A state change may brighten a border or fill an action field, but it should not introduce a generic shadow or glow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do use black, warm bone, structural gray, muted bone, and acid-lime as the everyday palette.",
+      "Do use Barlow Condensed for campaign-scale headings and Fira Code for technical detail.",
+      "Do build hierarchy with scale, alignment, and whitespace before adding ornament.",
+      "Do use technical labels only when they carry real information.",
+      "Do keep halftone geometry sparse, regular, and structurally anchored.",
+      "Do preserve readable body copy and accessible contrast."
+    ],
+    "donts": [
+      "Don't use generic cyberpunk neon, rainbow gradients, or glowing holographic panels.",
+      "Don't add fantasy mechanisms, military camouflage, excessive greebles, or meaningless symbols.",
+      "Don't fill every surface with halftone noise or microcopy.",
+      "Don't use decorative shadows, rounded software-dashboard cards, or pill controls.",
+      "Don't replace real content with fictional specifications or random serial numbers.",
+      "Don't let the industrial fiction overpower the blog and resume's usefulness."
+    ]
+  }
+}

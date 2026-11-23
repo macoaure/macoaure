@@ -1,0 +1,145 @@
+---
+import config from 'virtual:starlight/user-config';
+import Search from 'virtual:starlight/components/Search';
+import SocialIcons from 'virtual:starlight/components/SocialIcons';
+import DitherBackground from './DitherBackground.astro';
+import Motion from './Motion.astro';
+
+const isPortuguese = Astro.url.pathname.startsWith('/pt-br');
+const prefix = isPortuguese ? '/pt-br' : '';
+const links = isPortuguese
+	? [
+			{ href: `${prefix}/`, label: 'Início' },
+			{ href: `${prefix}/resume/`, label: 'Currículo' },
+			{ href: `${prefix}/blog/`, label: 'Blog' },
+			{ href: `${prefix}/blog/now/`, label: 'Agora' },
+		]
+	: [
+			{ href: '/', label: 'Home' },
+			{ href: '/resume/', label: 'Resume' },
+			{ href: '/blog/', label: 'Blog' },
+			{ href: '/blog/now/', label: 'Now' },
+		];
+
+const shouldRenderSearch = config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
+---
+
+<DitherBackground />
+<Motion />
+
+<div class="site-header">
+	<button class="campaign-menu-toggle" type="button" aria-label={isPortuguese ? 'Abrir menu' : 'Open menu'} aria-controls="campaign-nav" aria-expanded="false">
+		<i class="fa-solid fa-bars" aria-hidden="true"></i>
+		<span>{isPortuguese ? 'Menu' : 'Menu'}</span>
+	</button>
+	<nav id="campaign-nav" class="campaign-nav" aria-label={isPortuguese ? 'Navegação principal' : 'Primary navigation'}>
+		<div class="campaign-links">
+			{links.map((link) => <a href={link.href}>{link.label}</a>)}
+		</div>
+		<div class="header-tools sl-flex print:hidden">
+			<div class="sl-flex social-icons"><SocialIcons /></div>
+			<button class="nav-toggle-button" type="button" data-theme-toggle aria-label="Toggle theme" aria-pressed="false">
+				<i class="fa-solid fa-circle-half-stroke" aria-hidden="true"></i>
+				<span data-theme-label>Theme</span>
+			</button>
+			<button class="nav-toggle-button" type="button" data-language-toggle aria-label={isPortuguese ? 'Switch to English' : 'Mudar para português'}>
+				<i class="fa-solid fa-language" aria-hidden="true"></i>
+				<span>{isPortuguese ? 'PT-BR' : 'EN'}</span>
+			</button>
+		</div>
+	</nav>
+	{shouldRenderSearch && <div class="header-search print:hidden"><Search /></div>}
+</div>
+
+<script>
+	const setupRightSidebarToggle = () => {
+		const sidebar = document.querySelector('.right-sidebar-container');
+		if (!sidebar || document.querySelector('[data-right-sidebar-toggle]')) return;
+
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.dataset.rightSidebarToggle = '';
+		button.setAttribute('aria-controls', 'starlight__on-this-page');
+		button.setAttribute('aria-expanded', 'false');
+		button.textContent = document.documentElement.lang === 'pt-BR' ? 'Índice' : 'Index';
+		document.body.append(button);
+		document.documentElement.classList.add('right-sidebar-collapsed', 'right-sidebar-ready');
+
+		button.addEventListener('click', () => {
+			const isCollapsed = document.documentElement.classList.toggle('right-sidebar-collapsed');
+			button.setAttribute('aria-expanded', String(!isCollapsed));
+		});
+	};
+
+	setupRightSidebarToggle();
+	const setupMobileNav = () => {
+		const button = document.querySelector<HTMLButtonElement>('.campaign-menu-toggle');
+		if (!button || button.dataset.ready) return;
+		button.dataset.ready = 'true';
+		button.addEventListener('click', () => {
+			const isOpen = document.documentElement.classList.toggle('mobile-nav-open');
+			button.setAttribute('aria-expanded', String(isOpen));
+		});
+	};
+
+	setupMobileNav();
+	const setupNavToggles = () => {
+		const themeButton = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
+		const languageButton = document.querySelector<HTMLButtonElement>('[data-language-toggle]');
+		if (themeButton && !themeButton.dataset.ready) {
+			themeButton.dataset.ready = 'true';
+			const updateThemeButton = () => {
+				const isLight = document.documentElement.dataset.theme === 'light';
+				themeButton.setAttribute('aria-pressed', String(isLight));
+				themeButton.querySelector('[data-theme-label]')!.textContent = isLight ? 'Light' : 'Dark';
+			};
+			updateThemeButton();
+			themeButton.addEventListener('click', () => {
+				const theme = document.documentElement.dataset.theme === 'light' ? 'dark' : 'light';
+				document.documentElement.dataset.theme = theme;
+				localStorage.setItem('starlight-theme', theme);
+				updateThemeButton();
+			});
+		}
+		if (languageButton && !languageButton.dataset.ready) {
+			languageButton.dataset.ready = 'true';
+			languageButton.addEventListener('click', () => {
+				const path = window.location.pathname;
+				const nextPath = path.startsWith('/pt-br')
+					? path.replace(/^\/pt-br(?=\/|$)/, '') || '/'
+					: `/pt-br${path}`;
+				window.location.href = `${nextPath}${window.location.search}${window.location.hash}`;
+			});
+		}
+	};
+
+	setupNavToggles();
+	const setupPdfPreview = () => {
+		const path = window.location.pathname.replace(/^\//, '');
+		const isResume = path === 'resume/' || path === 'pt-br/resume/';
+		const isPdfPreview = isResume && new URLSearchParams(window.location.search).get('pdf') === '1';
+		document.documentElement.classList.toggle('pdf-preview', isPdfPreview);
+	};
+
+	setupPdfPreview();
+	const setupResumePrint = () => {
+		document.querySelectorAll<HTMLButtonElement>('[data-print-resume]').forEach((button) => {
+			if (button.dataset.ready) return;
+			button.dataset.ready = 'true';
+			button.addEventListener('click', () => window.print());
+		});
+	};
+
+	setupResumePrint();
+	document.addEventListener('astro:before-swap', () => {
+		document.documentElement.classList.add('right-sidebar-collapsed');
+		document.documentElement.classList.remove('mobile-nav-open');
+	});
+	document.addEventListener('astro:page-load', () => {
+		setupRightSidebarToggle();
+		setupMobileNav();
+		setupNavToggles();
+		setupPdfPreview();
+		setupResumePrint();
+	});
+</script>

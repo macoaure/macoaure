@@ -1,0 +1,35 @@
+<div class="motion-progress" data-motion-progress aria-hidden="true"></div>
+
+<script>
+	import { animate, inView, scroll } from 'motion';
+
+	const setupMotion = () => {
+		document
+			.querySelectorAll<HTMLElement>('.hero .copy, [data-motion-reveal], .sl-markdown-content > h2, .sl-markdown-content > h3, .sl-markdown-content > ul, .sl-markdown-content > blockquote')
+			.forEach((element, index) => {
+			if (element.hasAttribute('data-motion-ready')) return;
+			element.setAttribute('data-motion-ready', '');
+			element.style.opacity = '0';
+			element.style.transform = 'translateY(12px)';
+			inView(
+				element,
+				() => {
+					const enter = animate(element, { opacity: 1, y: 0 }, { duration: 0.5, delay: index * 0.06, ease: 'easeOut' });
+					return () => {
+						enter.stop();
+						animate(element, { opacity: 0, y: 12 }, { duration: 0.3, ease: 'easeIn' });
+					};
+				},
+				{ amount: 0.15 },
+				);
+			});
+	};
+
+	if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		scroll((progress) => {
+			document.querySelector<HTMLElement>('[data-motion-progress]')?.style.setProperty('transform', `scaleX(${progress})`);
+		});
+		setupMotion();
+		document.addEventListener('astro:page-load', setupMotion);
+	}
+</script>
