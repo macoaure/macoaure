@@ -1,0 +1,18 @@
+# Marcos Aurelio
+
+> Personal blog and resume for Marcos “Marcão” Aurelio, a software architect and senior backend engineer.
+
+This site contains Marcos Aurelio's professional resume, technical notes, current interests, and open-source activity. English pages are available at the root; Brazilian Portuguese pages are under `/pt-br/`.
+
+## Pages
+
+- [Home](https://macoaure.github.io/macoaure/): Personal profile, open-source activity, resume, and blog links.
+- [Resume](https://macoaure.github.io/macoaure/resume/): English professional experience, skills, and contact information.
+- [Blog](https://macoaure.github.io/macoaure/blog/): Technical notes and project reflections.
+- [First post](https://macoaure.github.io/macoaure/blog/first-post/): Why this site exists and what it is meant to become.
+- [Now](https://macoaure.github.io/macoaure/blog/now/): Current focus, reading, and projects.
+- [Português (Brasil)](https://macoaure.github.io/macoaure/pt-br/): Brazilian Portuguese version of the site.
+
+## Additional content
+
+- [Fictional ATS resume test](https://macoaure.github.io/macoaure/resume/senior-php/): Synthetic resume variant for parser and ATS testing; it is not a real application.
