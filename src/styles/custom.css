@@ -396,6 +396,8 @@ header.header {
 }
 
 .hero {
+	max-width: 42rem;
+	margin-inline: auto;
 	min-height: min(36vh, 26rem);
 	position: relative;
 	isolation: isolate;
@@ -1963,6 +1965,10 @@ body::after,
 
 	.sl-markdown-content > * + * {
 		margin-block-start: 1.05rem;
+	}
+
+	.sl-markdown-content {
+		min-height: 100vh;
 	}
 
 	.site-footer {
