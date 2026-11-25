@@ -1,0 +1,41 @@
+---
+const { user, label } = Astro.props;
+---
+
+<a class="home-contributions-chart" href={`https://github.com/${user}`} aria-label={label}>
+	<svg class="contrib-svg" data-contributions={user} role="img" aria-label={label} viewBox="0 0 690 91" />
+</a>
+
+<script>
+	const CELL = 10, GAP: number = 3, STEP = CELL + GAP;
+
+	const draw = async (svg: SVGSVGElement) => {
+		try {
+			// no-store: fetch live data on every page view
+			const res = await fetch(`https://github-contributions-api.jogruber.de/v4/${svg.dataset.contributions}?y=last`, { cache: 'no-store' });
+			if (!res.ok) return;
+			const { contributions } = await res.json();
+			const offset = new Date(contributions[0].date + 'T00:00:00Z').getUTCDay();
+			svg.replaceChildren(
+				...contributions.map((c: { date: string; count: number; level: number }, i: number) => {
+					const n = i + offset;
+					const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+					rect.setAttribute('x', String(Math.floor(n / 7) * STEP));
+					rect.setAttribute('y', String((n % 7) * STEP));
+					rect.setAttribute('width', String(CELL));
+					rect.setAttribute('height', String(CELL));
+					rect.setAttribute('rx', '2');
+					rect.setAttribute('class', `contrib-l${c.level}`);
+					rect.innerHTML = `<title>${c.count} contributions on ${c.date}</title>`;
+					return rect;
+				}),
+			);
+		} catch {
+			// shortcut: on failure the chart stays empty; add a retry/fallback image if this proves flaky
+		}
+	};
+
+	document.addEventListener('astro:page-load', () => {
+		document.querySelectorAll<SVGSVGElement>('svg[data-contributions]').forEach(draw);
+	});
+</script>

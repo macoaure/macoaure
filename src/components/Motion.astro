@@ -5,7 +5,7 @@
 
 	const setupMotion = () => {
 		document
-			.querySelectorAll<HTMLElement>('.hero .copy, [data-motion-reveal], .sl-markdown-content > h2, .sl-markdown-content > h3, .sl-markdown-content > ul, .sl-markdown-content > blockquote')
+			.querySelectorAll<HTMLElement>('.hero .copy, [data-motion-reveal], .sl-markdown-content > .sl-heading-wrapper, .sl-markdown-content > h2, .sl-markdown-content > h3, .sl-markdown-content > p, .sl-markdown-content > ul, .sl-markdown-content > ol, .sl-markdown-content > pre, .sl-markdown-content > blockquote, .home-section-heading, .home-contributions-chart, .recent-posts li')
 			.forEach((element, index) => {
 			if (element.hasAttribute('data-motion-ready')) return;
 			element.setAttribute('data-motion-ready', '');
@@ -14,7 +14,7 @@
 			inView(
 				element,
 				() => {
-					const enter = animate(element, { opacity: 1, y: 0 }, { duration: 0.5, delay: index * 0.06, ease: 'easeOut' });
+					const enter = animate(element, { opacity: 1, y: 0 }, { duration: 0.5, delay: Math.min(index, 5) * 0.06, ease: 'easeOut' });
 					return () => {
 						enter.stop();
 						animate(element, { opacity: 0, y: 12 }, { duration: 0.3, ease: 'easeIn' });
@@ -25,7 +25,30 @@
 			});
 	};
 
+	// Random floating markers in the side margins; rebuilt on every page view so no two look the same.
+	const SHAPES = ['plus', 'ring', 'square', 'dot', 'tri'];
+	const rnd = (a: number, b: number) => a + Math.random() * (b - a);
+	const setupMarkers = () => {
+		document.querySelector('.mini-field')?.remove();
+		const margin = (innerWidth - 42 * 16) / 2; // content column is 42rem
+		if (margin < 64) return;
+		const field = document.createElement('div');
+		field.className = 'mini-field';
+		field.setAttribute('aria-hidden', 'true');
+		for (let i = 0; i < Math.round(rnd(7, 12)); i++) {
+			const el = document.createElement('span');
+			el.className = `mini ${SHAPES[Math.floor(Math.random() * SHAPES.length)]}`;
+			const left = Math.random() < 0.5;
+			const x = left ? rnd(8, margin - 24) : innerWidth - rnd(24, margin - 8);
+			const size = rnd(8, 26);
+			el.style.cssText = `left:${x}px;top:${rnd(8, 92)}%;--s:${size}px;--o:${rnd(0.25, 0.7)};--delay:${rnd(0, 2)}s;--dur:${rnd(5, 14)}s;--dx:${rnd(-40, 40)}px;--dy:${rnd(-70, 70)}px;--rot:${rnd(-180, 180)}deg`;
+			field.append(el);
+		}
+		document.body.prepend(field);
+	};
+
 	if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		document.addEventListener('astro:page-load', setupMarkers);
 		scroll((progress) => {
 			document.querySelector<HTMLElement>('[data-motion-progress]')?.style.setProperty('transform', `scaleX(${progress})`);
 		});

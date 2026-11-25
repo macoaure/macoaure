@@ -1,6 +1,7 @@
 ---
 title: A small site with room to grow
 description: Why this site exists and what I want it to become.
+date: 2026-11-23
 ---
 
 This is the first note on my new personal site.

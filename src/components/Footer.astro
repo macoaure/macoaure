@@ -1,0 +1,43 @@
+---
+import EditLink from 'virtual:starlight/components/EditLink';
+import LastUpdated from 'virtual:starlight/components/LastUpdated';
+import Pagination from 'virtual:starlight/components/Pagination';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname;
+const isPortuguese = path.startsWith('/pt-br');
+---
+
+<footer class="site-footer">
+	<div class="site-footer-meta">
+		<div class="site-footer-details">
+			<EditLink />
+			<LastUpdated />
+		</div>
+		<Pagination />
+	</div>
+	<div class="site-footer-bar">
+		<span>MACOAURE / 2026</span>
+		<span>{isPortuguese ? 'Arquivo pessoal de Marcos Aurelio' : 'Personal archive of Marcos Aurelio'}</span>
+	</div>
+</footer>
+
+<button class="go-to-top" type="button" aria-label={isPortuguese ? 'Voltar ao topo' : 'Go to top'}>
+	<i class="fa-solid fa-arrow-up" aria-hidden="true"></i>
+	<span>{isPortuguese ? 'Topo' : 'Top'}</span>
+</button>
+
+<script>
+	const setupGoToTop = () => {
+		const button = document.querySelector<HTMLButtonElement>('.go-to-top');
+		if (!button || button.dataset.ready) return;
+		button.dataset.ready = 'true';
+		const updateVisibility = () => button.classList.toggle('is-visible', window.scrollY > 480);
+		window.addEventListener('scroll', updateVisibility, { passive: true });
+		button.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+		updateVisibility();
+	};
+
+	setupGoToTop();
+	document.addEventListener('astro:page-load', setupGoToTop);
+</script>

@@ -5,6 +5,8 @@ template: splash
 hero:
   tagline: Um arquivo pessoal de software, ideias e do trabalho por trás do trabalho.
 ---
+import RecentPosts from '../../../components/RecentPosts.astro';
+import ContributionsChart from '../../../components/ContributionsChart.astro';
 
 <div class="home-shell">
 
@@ -19,8 +21,8 @@ hero:
 <p>Sou desenvolvedor de software focado em produtos cuidadosos e confiáveis — transformando problemas nebulosos em interfaces simples e sistemas fáceis de manter.</p>
 
 <nav class="home-links" aria-label="Explorar">
-<a href="/pt-br/resume/"><i class="fa-solid fa-file-lines" aria-hidden="true"></i>Currículo</a>
-<a href="/pt-br/blog/"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i>Blog</a>
+<a href="resume/"><i class="fa-solid fa-file-lines" aria-hidden="true"></i>Currículo</a>
+<a href="blog/"><i class="fa-solid fa-pen-nib" aria-hidden="true"></i>Blog</a>
 </nav>
 
 </div>
@@ -40,9 +42,18 @@ hero:
 <h2 id="contributions-title">Contribuições</h2>
 </div>
 
-<a class="home-contributions-chart" href="https://github.com/macoaure" aria-label="Ver o perfil de macoaure no GitHub">
-<img src="https://ghchart.rshah.org/b6ff00/macoaure" alt="Atividade de contribuições de macoaure no GitHub" loading="lazy" />
-</a>
+<ContributionsChart user="macoaure" label="Ver o perfil de macoaure no GitHub" />
+
+</section>
+
+<section class="home-contributions" aria-labelledby="posts-title">
+
+<div class="home-section-heading">
+<span class="home-meta">Últimos textos</span>
+<h2 id="posts-title">Posts recentes</h2>
+</div>
+
+<RecentPosts lang="pt-br" />
 
 </section>
 

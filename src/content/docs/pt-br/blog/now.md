@@ -1,6 +1,7 @@
 ---
 title: Agora
 description: No que Marcos “Marcão” Aurelio está focado neste momento.
+date: 2026-11-23
 ---
 
 ## Foco

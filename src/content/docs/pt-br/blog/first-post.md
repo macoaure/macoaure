@@ -1,6 +1,7 @@
 ---
 title: Um site pequeno com espaço para crescer
 description: Por que este site existe e no que quero transformá-lo.
+date: 2026-11-23
 ---
 
 Esta é a primeira nota do meu novo site pessoal.
