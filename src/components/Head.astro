@@ -1,7 +1,10 @@
 ---
 import StarlightHead from '@astrojs/starlight/components/Head.astro';
 import { ClientRouter } from 'astro:transitions';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 
 <StarlightHead />
+<link rel="icon" href={`${base}/favicon.svg`} type="image/svg+xml" />
 <ClientRouter />

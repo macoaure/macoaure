@@ -5,8 +5,10 @@ import SocialIcons from 'virtual:starlight/components/SocialIcons';
 import DitherBackground from './DitherBackground.astro';
 import Motion from './Motion.astro';
 
-const isPortuguese = Astro.url.pathname.startsWith('/pt-br');
-const prefix = isPortuguese ? '/pt-br' : '';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const path = Astro.url.pathname.startsWith(base) ? Astro.url.pathname.slice(base.length) : Astro.url.pathname;
+const isPortuguese = path.startsWith('/pt-br');
+const prefix = `${base}${isPortuguese ? '/pt-br' : ''}`;
 const links = isPortuguese
 	? [
 			{ href: `${prefix}/`, label: 'Início' },
@@ -15,10 +17,10 @@ const links = isPortuguese
 			{ href: `${prefix}/blog/now/`, label: 'Agora' },
 		]
 	: [
-			{ href: '/', label: 'Home' },
-			{ href: '/resume/', label: 'Resume' },
-			{ href: '/blog/', label: 'Blog' },
-			{ href: '/blog/now/', label: 'Now' },
+			{ href: `${prefix}/`, label: 'Home' },
+			{ href: `${prefix}/resume/`, label: 'Resume' },
+			{ href: `${prefix}/blog/`, label: 'Blog' },
+			{ href: `${prefix}/blog/now/`, label: 'Now' },
 		];
 
 const shouldRenderSearch = config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
@@ -32,7 +34,7 @@ const shouldRenderSearch = config.pagefind || config.components.Search !== '@ast
 		<i class="fa-solid fa-bars" aria-hidden="true"></i>
 		<span>{isPortuguese ? 'Menu' : 'Menu'}</span>
 	</button>
-	<nav id="campaign-nav" class="campaign-nav" aria-label={isPortuguese ? 'Navegação principal' : 'Primary navigation'}>
+	<nav id="campaign-nav" class="campaign-nav" data-base={base} aria-label={isPortuguese ? 'Navegação principal' : 'Primary navigation'}>
 		<div class="campaign-links">
 			{links.map((link) => <a href={link.href}>{link.label}</a>)}
 		</div>
@@ -49,6 +51,11 @@ const shouldRenderSearch = config.pagefind || config.components.Search !== '@ast
 		</div>
 	</nav>
 	{shouldRenderSearch && <div class="header-search print:hidden"><Search /></div>}
+</div>
+
+<div class="resume-variant-picker" data-resume-variant-picker hidden>
+	<label for="resume-variant-select">Resume variant</label>
+	<select id="resume-variant-select" data-resume-variant-select></select>
 </div>
 
 <script>
@@ -83,6 +90,12 @@ const shouldRenderSearch = config.pagefind || config.components.Search !== '@ast
 	};
 
 	setupMobileNav();
+	const getSitePath = () => {
+		const base = document.querySelector<HTMLElement>('#campaign-nav')?.dataset.base ?? '';
+		const path = window.location.pathname;
+		return path.startsWith(base) ? path.slice(base.length) || '/' : path;
+	};
+
 	const setupNavToggles = () => {
 		const themeButton = document.querySelector<HTMLButtonElement>('[data-theme-toggle]');
 		const languageButton = document.querySelector<HTMLButtonElement>('[data-language-toggle]');
@@ -104,34 +117,122 @@ const shouldRenderSearch = config.pagefind || config.components.Search !== '@ast
 		if (languageButton && !languageButton.dataset.ready) {
 			languageButton.dataset.ready = 'true';
 			languageButton.addEventListener('click', () => {
-				const path = window.location.pathname;
+				const base = document.querySelector<HTMLElement>('#campaign-nav')?.dataset.base ?? '';
+				const path = getSitePath();
 				const nextPath = path.startsWith('/pt-br')
 					? path.replace(/^\/pt-br(?=\/|$)/, '') || '/'
 					: `/pt-br${path}`;
-				window.location.href = `${nextPath}${window.location.search}${window.location.hash}`;
+				window.location.href = `${base}${nextPath}${window.location.search}${window.location.hash}`;
 			});
 		}
 	};
 
 	setupNavToggles();
 	const setupPdfPreview = () => {
-		const path = window.location.pathname.replace(/^\//, '');
-		const isResume = path === 'resume/' || path === 'pt-br/resume/';
+		const path = getSitePath().replace(/^\//, '');
+		const isResume = path === 'resume/' || path === 'pt-br/resume/' || path === 'resume/senior-php/' || path === 'pt-br/resume/senior-php/';
 		const isPdfPreview = isResume && new URLSearchParams(window.location.search).get('pdf') === '1';
 		document.documentElement.classList.toggle('pdf-preview', isPdfPreview);
 	};
 
 	setupPdfPreview();
+	// Strips fictional/test disclaimers from the rendered DOM for PDF output only; the source pages keep them.
+	const cleanFictionMarkersForRender = () => {
+		const content = document.querySelector('main');
+		if (!content) return;
+		content.querySelectorAll('blockquote').forEach((quote) => {
+			if (/PERFECT TEST WARNING/i.test(quote.textContent ?? '')) quote.remove();
+		});
+		const rules: [RegExp, string][] = [
+			[/\s*[—-]\s*(?:Fictional ATS Test|Teste ATS Fictício)/g, ''],
+			[/\s*\[(?:FICTIONAL TEST DATA|DADOS FICTÍCIOS(?: PARA TESTE)?)\]/g, ''],
+			[/(?:Fictional ATS variant|Variante fictícia)[^.]*\.\s*/g, ''],
+			[/\s*(?:Details and outcomes are synthetic|Detalhes e resultados são sintéticos)[^.]*\./g, ''],
+			[/,? documented for this test|,? documentad[ao]s para o teste/g, ''],
+			[/\s+em cenário fictício/g, ''],
+			[/\s*\b(?:fictional|synthetic|fictíci[oa]s?|sintétic[oa]s?)\b/gi, ''],
+		];
+		const clean = (text: string) => rules.reduce((out, [re, to]) => out.replace(re, to), text);
+		const walker = document.createTreeWalker(content, NodeFilter.SHOW_TEXT);
+		const nodes: Text[] = [];
+		while (walker.nextNode()) nodes.push(walker.currentNode as Text);
+		nodes.forEach((node) => {
+			node.textContent = clean(node.textContent ?? '');
+		});
+		content.querySelectorAll('code, p').forEach((el) => {
+			if (!el.textContent?.trim() && !el.children.length) el.remove();
+		});
+		document.title = clean(document.title);
+	};
+	window.addEventListener('beforeprint', cleanFictionMarkersForRender);
+	if (document.documentElement.classList.contains('pdf-preview')) cleanFictionMarkersForRender();
+
+	const setupResumeVariant = () => {
+		const path = getSitePath().replace(/^\//, '');
+		const isResumeIndex = path === 'resume/' || path === 'pt-br/resume/';
+		const variant = new URLSearchParams(window.location.search).get('variant');
+		if (!isResumeIndex || variant !== 'senior-php') return;
+		const base = document.querySelector<HTMLElement>('#campaign-nav')?.dataset.base ?? '';
+		window.location.replace(`${base}/${path.startsWith('pt-br/') ? 'pt-br/' : ''}resume/senior-php/`);
+	};
+
+	setupResumeVariant();
+	const resumeUnlockText = 'variant';
+	let resumeUnlockBuffer = '';
+	const setupResumeVariantPicker = () => {
+		const path = getSitePath().replace(/^\//, '');
+		const isPortuguese = path.startsWith('pt-br/');
+		const isResume = path === 'resume/' || path === 'pt-br/resume/' || path === 'resume/senior-php/' || path === 'pt-br/resume/senior-php/';
+		const picker = document.querySelector<HTMLElement>('[data-resume-variant-picker]');
+		const select = document.querySelector<HTMLSelectElement>('[data-resume-variant-select]');
+		if (!picker || !select || !isResume) return;
+		if (!select.dataset.ready) {
+			select.dataset.ready = 'true';
+			select.innerHTML = `
+				<option value="${document.querySelector<HTMLElement>('#campaign-nav')?.dataset.base ?? ''}/${isPortuguese ? 'pt-br/' : ''}resume/">${isPortuguese ? 'Currículo principal' : 'Main resume'}</option>
+				<option value="${document.querySelector<HTMLElement>('#campaign-nav')?.dataset.base ?? ''}/${isPortuguese ? 'pt-br/' : ''}resume/senior-php/">${isPortuguese ? 'Teste ATS PHP Sênior' : 'Senior PHP ATS test'}</option>
+			`;
+			select.value = window.location.pathname;
+			select.addEventListener('change', () => {
+				window.location.href = select.value;
+			});
+		}
+		picker.hidden = !document.documentElement.classList.contains('resume-variants-unlocked');
+	};
+
+	const unlockResumeVariants = () => {
+		document.documentElement.classList.add('resume-variants-unlocked');
+		setupResumeVariantPicker();
+	};
+
+	document.addEventListener('keydown', (event) => {
+		const target = event.target;
+		if (target instanceof HTMLElement && target.matches('input, textarea, select, [contenteditable="true"]')) return;
+		if (event.key.length !== 1) return;
+		resumeUnlockBuffer = `${resumeUnlockBuffer}${event.key.toLowerCase()}`.slice(-resumeUnlockText.length);
+		if (resumeUnlockBuffer === resumeUnlockText) {
+			resumeUnlockBuffer = '';
+			unlockResumeVariants();
+		}
+	});
+
+	setupResumeVariantPicker();
 	const setupResumePrint = () => {
 		document.querySelectorAll<HTMLButtonElement>('[data-print-resume]').forEach((button) => {
 			if (button.dataset.ready) return;
 			button.dataset.ready = 'true';
-			button.addEventListener('click', () => window.print());
+			button.addEventListener('click', () => {
+				cleanFictionMarkersForRender();
+				window.print();
+			});
 		});
 	};
 
 	setupResumePrint();
-	document.addEventListener('astro:before-swap', () => {
+	document.addEventListener('astro:before-swap', (event) => {
+		// The incoming document has no data-theme yet; carry the current one over so the swap doesn't reset it.
+		const theme = document.documentElement.dataset.theme;
+		if (theme) event.newDocument.documentElement.dataset.theme = theme;
 		document.documentElement.classList.add('right-sidebar-collapsed');
 		document.documentElement.classList.remove('mobile-nav-open');
 	});
@@ -140,6 +241,69 @@ const shouldRenderSearch = config.pagefind || config.components.Search !== '@ast
 		setupMobileNav();
 		setupNavToggles();
 		setupPdfPreview();
+		if (document.documentElement.classList.contains('pdf-preview')) cleanFictionMarkersForRender();
+		setupResumeVariant();
+		setupResumeVariantPicker();
 		setupResumePrint();
 	});
+</script>
+
+<script>
+	// Background spheres: a stable per-page position (hash of the path) plus a mouse-driven offset, eased every frame.
+	const root = document.documentElement;
+	const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const state = { x1: 15, y1: 10, x2: 90, y2: 55, mx: 0, my: 0 }; // current
+	const target = { ...state };
+	let raf = 0;
+
+	const hash = (str: string) => {
+		let h = 2166136261;
+		for (const c of str) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+		return h >>> 0;
+	};
+
+	const retarget = () => {
+		const base = document.querySelector<HTMLElement>('#campaign-nav')?.dataset.base ?? '';
+		const path = (location.pathname.startsWith(base) ? location.pathname.slice(base.length) : location.pathname).replace(/^\/pt-br(?=\/|$)/, '') || '/';
+		const h = hash(path);
+		// sphere 1 on the left side, sphere 2 on the right, so they stay outside the clean center
+		target.x1 = 2 + (h % 28);
+		target.y1 = 5 + ((h >>> 8) % 90);
+		target.x2 = 70 + ((h >>> 16) % 28);
+		target.y2 = 5 + ((h >>> 24) % 90);
+		start();
+	};
+
+	const apply = () => {
+		const ox = state.mx * 60, oy = state.my * 40;
+		root.style.setProperty('--s1x', `calc(${state.x1}% + ${ox}px)`);
+		root.style.setProperty('--s1y', `calc(${state.y1}% + ${oy}px)`);
+		root.style.setProperty('--s2x', `calc(${state.x2}% - ${ox * 1.6}px)`);
+		root.style.setProperty('--s2y', `calc(${state.y2}% - ${oy * 1.6}px)`);
+	};
+
+	const tick = () => {
+		let moving = false;
+		for (const k of Object.keys(state) as (keyof typeof state)[]) {
+			const d = target[k] - state[k];
+			if (Math.abs(d) > 0.01) { state[k] += d * 0.06; moving = true; } else state[k] = target[k];
+		}
+		apply();
+		raf = moving ? requestAnimationFrame(tick) : 0;
+	};
+
+	const start = () => {
+		if (reduce) { Object.assign(state, target); apply(); return; }
+		if (!raf) raf = requestAnimationFrame(tick);
+	};
+
+	if (!reduce) {
+		addEventListener('pointermove', (e) => {
+			target.mx = (e.clientX / innerWidth - 0.5) * 2;
+			target.my = (e.clientY / innerHeight - 0.5) * 2;
+			start();
+		}, { passive: true });
+	}
+
+	document.addEventListener('astro:page-load', retarget);
 </script>

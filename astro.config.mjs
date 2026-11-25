@@ -4,6 +4,8 @@ import starlight from '@astrojs/starlight';
 
 // https://astro.build/config
 export default defineConfig({
+	site: 'https://macoaure.github.io',
+	base: '/macoaure',
 	integrations: [
 		starlight({
 			title: 'Marcos Aurelio',
@@ -16,6 +18,7 @@ export default defineConfig({
 			components: {
 				Header: './src/components/Header.astro',
 				Head: './src/components/Head.astro',
+				Footer: './src/components/Footer.astro',
 			},
 			customCss: ['./src/styles/custom.css'],
 			sidebar: [],
