@@ -7,7 +7,9 @@
     "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+		"astro": "astro",
+		"test:visual": "playwright test",
+		"debug:layout": "node scripts/debug-layout.js"
   },
   "dependencies": {
     "@astrojs/starlight": "^0.43.1",
@@ -16,5 +18,8 @@
     "astro": "^7.3.6",
     "motion": "^14.14.0",
     "sharp": "^0.35.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.65.1"
   }
 }
